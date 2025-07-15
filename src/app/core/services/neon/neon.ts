@@ -8,7 +8,7 @@ import { Product } from '../../../features/product-list/models/product.model';
 })
 export class Neon {
   private http = inject(HttpClient);
-  private neonApiUrl = 'https://node-api-jet.vercel.app/api';
+  private readonly neonApiUrl = 'https://node-api-jet.vercel.app/api';
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.neonApiUrl}/products`);
