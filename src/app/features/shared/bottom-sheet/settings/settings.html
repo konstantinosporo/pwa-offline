@@ -1,0 +1,16 @@
+<mat-nav-list>
+  @if(data === 'online'){
+  <h3 mat-list-item class="status online">Online</h3>
+  <h4 mat-subheader class="subheader">Back online, offline mode disabled!</h4>
+  }@else{
+  <h3 mat-list-item class="status offline">Offline</h3>
+  <h4 mat-subheader class="subheader">
+    Would you like to continue in Offline mode?
+  </h4>
+
+  <div class="actions">
+    <button mat-list-item (click)="matBottomSheet.dismiss()">No</button>
+    <button mat-list-item (click)="initOfflineMode()">Yes</button>
+  </div>
+  }
+</mat-nav-list>

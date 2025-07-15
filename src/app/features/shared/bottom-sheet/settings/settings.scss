@@ -1,0 +1,24 @@
+@use 'mixins' as *;
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.status {
+  font-weight: 600;
+  @include center;
+
+  &.online {
+    color: #4caf50;
+
+  }
+
+  &.offline {
+    color: #f44336;
+  }
+}
+
+.subheader {
+  @include center;
+}
