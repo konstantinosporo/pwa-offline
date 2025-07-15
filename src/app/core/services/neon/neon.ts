@@ -10,6 +10,7 @@ export class Neon {
   private http = inject(HttpClient);
   private readonly neonApiUrl = 'https://node-api-jet.vercel.app/api';
 
+  /** Fetch `ProductModel[]` from the API. */
   getProducts(): Observable<ProductModel[]> {
     return this.http.get<ProductModel[]>(`${this.neonApiUrl}/products`);
   }

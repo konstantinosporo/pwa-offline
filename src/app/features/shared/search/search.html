@@ -1,4 +1,4 @@
 <mat-form-field> 
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="emitFilter($event)" placeholder="Ex. ium" #input />
+  <mat-label>{{placeholder()}}</mat-label>
+  <input #input matInput (keyup)="emitFilter($event)" placeholder="Ex. Decoration Set" />
 </mat-form-field>

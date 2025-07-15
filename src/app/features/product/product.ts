@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -9,6 +9,8 @@ import { Storage } from '../../core/services/storage/storage';
 import { ProductList } from './product-list/product-list';
 import { ProductModel } from './models/product.model';
 import { Search } from '../shared/search/search';
+import { NoDataTemplate } from '../shared/templates/no-data-template/no-data-template';
+import { SpinnerTemplate } from '../shared/templates/spinner-template/spinner-template';
 
 @Component({
   selector: 'pwa-product',
@@ -18,22 +20,32 @@ import { Search } from '../shared/search/search';
     MatFormFieldModule,
     ProductList,
     Search,
+    NoDataTemplate,
+    SpinnerTemplate,
   ],
   templateUrl: './product.html',
   styleUrl: './product.scss',
   standalone: true,
 })
 export class Product {
-  // Inject services
+  // Injections
   private neonService = inject(Neon);
   protected networkService = inject(Network);
   protected storageService = inject(Storage);
 
-  // Signals
-  products = signal<ProductModel[]>([]);
-  filter = signal('');
+  /** Reference to the `Search` component. */
+  private readonly searchInputRef = viewChild<Search>('search');
 
-  // Computed data source
+  /** Holds all loaded products as a signal */
+  protected readonly products = signal<ProductModel[]>([]);
+  /** Current filter input value as a signal */
+  private readonly filter = signal('');
+
+  /**
+   * Computed `MatTableDataSource` based on the current filter and products.
+   *
+   * Automatically re-computes when either `products` or `filter` changes.
+   */
   dataSource = computed(() => {
     const all = this.products();
     const search = this.filter().toLowerCase().trim();
@@ -49,6 +61,7 @@ export class Product {
     return new MatTableDataSource(filtered);
   });
 
+  /** Initializes the component by fetching products from the Neon service */
   ngOnInit(): void {
     this.neonService
       .getProducts()
@@ -58,14 +71,34 @@ export class Product {
       });
   }
 
+  /**
+   * Applies a filter to the product list.
+   * @param filterValue - The string to filter products by.
+   */
   applyFilter(filterValue: string) {
     this.filter.set(filterValue);
   }
 
+  /**
+   * Resets the filter and clears the search input.
+   */
+  resetFilter() {
+    this.filter.set('');
+    this.searchInputRef()?.resetFilter();
+  }
+
+  /**
+   * Handles update action for a product row
+   * @param id - ID of the product to update
+   */
   onUpdateRow(id: ProductModel['id']) {
     console.log(id);
   }
 
+  /**
+   * Handles delete action for a product row
+   * @param id - ID of the product to delete
+   */
   onDeleteRow(id: ProductModel['id']) {
     console.log(id);
   }

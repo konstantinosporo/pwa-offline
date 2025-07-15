@@ -1,0 +1,20 @@
+.no-data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #6b7280;
+  // TODO CHECK COLORS LAATEER
+}
+
+.no-data-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.no-data-message {
+  font-size: 18px;
+  font-weight: 500;
+}

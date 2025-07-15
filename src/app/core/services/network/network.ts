@@ -11,6 +11,7 @@ export class Network {
   protected matBottomSheet = inject(MatBottomSheet);
 
   // About online/ offline status.
+  // TODO THIS CAN ALSO BE DONE WITH SIGNALS CANT IT
   private onlineSubject = new BehaviorSubject('');
   public network$ = this.onlineSubject.asObservable();
 
@@ -18,7 +19,7 @@ export class Network {
   public offlineModeSubject = new BehaviorSubject(false);
   public offlineMode$ = this.offlineModeSubject.asObservable();
 
-  // Constants.
+  /** Automatically close the `Online` popup after *2000* milliseconds */
   private readonly ONLINE_DISMISS_TIMEOUT = 2000;
 
   constructor() {

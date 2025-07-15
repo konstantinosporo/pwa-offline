@@ -1,10 +1,23 @@
 @if(products().length){
 <div class="product-list-container">
-  <pwa-search (changed)="applyFilter($event)" />
-  <pwa-product-list (update)="onUpdateRow($event)" (delete)="onDeleteRow($event)" [dataSource]="dataSource()" />
+  <pwa-search
+    #search
+    placeholder="Search products.."
+    (changed)="applyFilter($event)"
+  />
+  <pwa-product-list
+    (update)="onUpdateRow($event)"
+    (delete)="onDeleteRow($event)"
+    [dataSource]="dataSource()"
+  />
+  @if(dataSource().filteredData.length === 0){
+  <pwa-no-data-template
+    message="No products match your search."
+    icon="🔍"
+    (iconClicked)="resetFilter()"
+  />
+  }
 </div>
 }@else{
-<div class="product-list-container">
-  <h1>Loading</h1>
-</div>
+<pwa-spinner-template message="Loading products.." />
 }
