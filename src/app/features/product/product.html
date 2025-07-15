@@ -1,0 +1,10 @@
+@if(products().length){
+<div class="product-list-container">
+  <pwa-search (changed)="applyFilter($event)" />
+  <pwa-product-list (update)="onUpdateRow($event)" (delete)="onDeleteRow($event)" [dataSource]="dataSource()" />
+</div>
+}@else{
+<div class="product-list-container">
+  <h1>Loading</h1>
+</div>
+}

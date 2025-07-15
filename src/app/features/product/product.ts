@@ -1,35 +1,36 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { take } from 'rxjs';
 import { Neon } from '../../core/services/neon/neon';
 import { Network } from '../../core/services/network/network';
 import { Storage } from '../../core/services/storage/storage';
-import { Product } from './models/product.model';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProductList } from './product-list/product-list';
+import { ProductModel } from './models/product.model';
+import { Search } from '../shared/search/search';
 
 @Component({
-  selector: 'app-product-list',
-  imports: [MatTableModule, MatInputModule, MatFormFieldModule],
-  templateUrl: './product-list.html',
-  styleUrl: './product-list.scss',
+  selector: 'pwa-product',
+  imports: [
+    MatTableModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ProductList,
+    Search,
+  ],
+  templateUrl: './product.html',
+  styleUrl: './product.scss',
   standalone: true,
 })
-export class ProductList {
+export class Product {
   // Inject services
   private neonService = inject(Neon);
   protected networkService = inject(Network);
   protected storageService = inject(Storage);
 
   // Signals
-  products = signal<Product[]>([]);
+  products = signal<ProductModel[]>([]);
   filter = signal('');
 
   // Computed data source
@@ -48,30 +49,24 @@ export class ProductList {
     return new MatTableDataSource(filtered);
   });
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'price',
-    'quantity',
-    'category',
-    'image_url',
-    'created_at',
-    'updated_at',
-    'discount',
-  ];
-
   ngOnInit(): void {
     this.neonService
       .getProducts()
       .pipe(take(1))
-      .subscribe((data: Product[]) => {
+      .subscribe((data: ProductModel[]) => {
         this.products.set(data);
       });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+  applyFilter(filterValue: string) {
     this.filter.set(filterValue);
+  }
+
+  onUpdateRow(id: ProductModel['id']) {
+    console.log(id);
+  }
+
+  onDeleteRow(id: ProductModel['id']) {
+    console.log(id);
   }
 }
