@@ -1,9 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Storage {
+  public key = signal<string>('');
+  public REFRESH_DATA = 0.1; // minutes
+
+  private readonly LOCAL_KEY = 'cached-data-key';
+
+  constructor() {
+    const savedKey = localStorage.getItem(this.LOCAL_KEY);
+    this.key.set(savedKey ?? this.generateNewKey());
+  }
+
+  private generateNewKey(): string {
+    return Math.random().toString();
+  }
+
+  updateKey() {
+    const newKey = this.generateNewKey();
+    this.key.set(newKey);
+    localStorage.setItem(this.LOCAL_KEY, newKey);
+    
+  }
   /**
    * Persists information in `LocalStorage`.
    * @param key The property name.
@@ -11,13 +32,14 @@ export class Storage {
    */
   save(key: string, data: any, saveWithTimeStamp = false) {
     if (saveWithTimeStamp) {
-      const dataWithTimeStamp = {
-        ...data,
+      const dataWithTimestamp = {
+        data,
         updated_at: new Date().toISOString(),
       };
-
-      localStorage.setItem(key, JSON.stringify(dataWithTimeStamp));
-    } else localStorage.setItem(key, JSON.stringify(data));
+      localStorage.setItem(key, JSON.stringify(dataWithTimestamp));
+    } else {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
   }
 
   /**
@@ -26,30 +48,43 @@ export class Storage {
    * @returns * **Success** - Parsed data.
    *          * **Error** - { message: string, error: any }
    */
-  get(key: string) {
+  get<T>(key: string): T | undefined {
     const raw = localStorage.getItem(key);
+    if (!raw) return undefined;
 
-    if (raw) {
-      try {
-        return JSON.parse(raw);
-      } catch (error) {
-        return { message: 'Something went wrong', error };
-      }
+    try {
+      return JSON.parse(raw) as T;
+    } catch {
+      return undefined;
     }
   }
 
-  /**
-   * Remove a specified row from `LocalStorage`.
-   * @param key The property name.
-   */
   delete(key: string) {
     localStorage.removeItem(key);
   }
 
-  /**
-   * Totally clears `LocalStorage`, by removing all key/pair values.
-   */
   clear() {
     localStorage.clear();
+  }
+
+  checkForCachedData<T>(key: string): Observable<T> {
+    if (!key) {
+      console.warn('Key is required to access LocalStorage.');
+      return throwError(() => new Error('Invalid key.'));
+    }
+
+    const data = this.get<T>(key);
+    if (data) {
+      return of(data);
+    }
+
+    return throwError(() => new Error('No data found in LocalStorage.'));
+  }
+
+  hasExpired(date: string, thresholdMinutes = this.REFRESH_DATA): boolean {
+    const now = Date.now();
+    const then = new Date(date).getTime();
+    const diffInMinutes = (now - then) / (1000 * 60);
+    return diffInMinutes >= thresholdMinutes;
   }
 }

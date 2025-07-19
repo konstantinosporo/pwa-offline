@@ -10,4 +10,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class SpinnerTemplate {
   /** Message rendered under the spinner. */
   message = input('Loading..');
+  /** Height of the component expected to be rendered. */
+  height = input('');
 }

@@ -1,8 +1,15 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { take } from 'rxjs';
+import { catchError, of, switchMap, take } from 'rxjs';
 import { Neon } from '../../core/services/neon/neon';
 import { Network } from '../../core/services/network/network';
 import { Storage } from '../../core/services/storage/storage';
@@ -63,11 +70,42 @@ export class Product {
 
   /** Initializes the component by fetching products from the Neon service */
   ngOnInit(): void {
-    this.neonService
-      .getProducts()
-      .pipe(take(1))
-      .subscribe((data: ProductModel[]) => {
-        this.products.set(data);
+    const key = this.storageService.key();
+
+    this.storageService
+      .checkForCachedData<
+        ProductModel[] | { data: ProductModel[]; updated_at: string }
+      >(key)
+      .pipe(
+        catchError(() =>
+          this.neonService.getProducts().pipe(
+            switchMap((data: ProductModel[]) => {
+              this.storageService.save(key, data, true);
+              return of({ data, updated_at: new Date().toISOString() });
+            }),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe({
+        next: (products) => {
+          // Handle expired data
+          if ('data' in products && 'updated_at' in products) {
+            this.products.set(products.data);
+
+            if (this.storageService.hasExpired(products.updated_at)) {
+              console.warn('Data expired, a new fetch should occur.');
+              this.storageService.delete(key);
+              this.storageService.updateKey();
+            }
+          } else {
+            // raw array fallback
+            this.products.set(products);
+          }
+        },
+        error: (error) => {
+          alert(error.message || 'Something went wrong');
+        },
       });
   }
 
