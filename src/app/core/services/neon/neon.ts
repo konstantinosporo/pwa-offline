@@ -14,4 +14,8 @@ export class Neon {
   getProducts(): Observable<ProductModel[]> {
     return this.http.get<ProductModel[]>(`${this.neonApiUrl}/products`);
   }
+  /** Delete a product from the API. */
+  deleteProduct(id: ProductModel['id']) {
+    return this.http.delete<ProductModel>(`${this.neonApiUrl}/products/${id}`);
+  }
 }

@@ -1,10 +1,8 @@
 import {
   Component,
-  computed,
-  effect,
-  inject,
+  computed, effect, inject,
   signal,
-  viewChild,
+  viewChild
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +16,9 @@ import { ProductModel } from './models/product.model';
 import { Search } from '../shared/search/search';
 import { NoDataTemplate } from '../shared/templates/no-data-template/no-data-template';
 import { SpinnerTemplate } from '../shared/templates/spinner-template/spinner-template';
+import { Status } from '../../core/services/network/network.model';
+import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
+import { HTTPAction } from '../../core/services/offline-actions/offline-actions.model';
 
 @Component({
   selector: 'pwa-product',
@@ -39,6 +40,7 @@ export class Product {
   private neonService = inject(Neon);
   protected networkService = inject(Network);
   protected storageService = inject(Storage);
+  protected offlineActionsService = inject(OfflineActions);
 
   /** Reference to the `Search` component. */
   private readonly searchInputRef = viewChild<Search>('search');
@@ -47,6 +49,30 @@ export class Product {
   protected readonly products = signal<ProductModel[]>([]);
   /** Current filter input value as a signal */
   private readonly filter = signal('');
+  /** Whether the browser is connected to the internet or not */
+  private readonly isOnline = computed(
+    () => this.networkService.status() === Status.Online,
+  );
+
+  offlineActionsEffect = effect(() => {
+    console.log(this.isOnline());
+    if (
+      this.isOnline() &&
+      this.offlineActionsService.actionQueue().length === 0
+    )
+      return;
+    
+    console.log('Passed effect if');
+
+    // Trigger the initialization of actions when back online, and there are actions in the queue.
+    if (
+      this.isOnline() &&
+      this.offlineActionsService.actionQueue().length > 0
+    ) {
+      this.offlineActionsService.initiateActionExecuting();
+      return;
+    }
+  });
 
   /**
    * Computed `MatTableDataSource` based on the current filter and products.
@@ -70,43 +96,10 @@ export class Product {
 
   /** Initializes the component by fetching products from the Neon service */
   ngOnInit(): void {
-    const key = this.storageService.key();
-
-    this.storageService
-      .checkForCachedData<
-        ProductModel[] | { data: ProductModel[]; updated_at: string }
-      >(key)
-      .pipe(
-        catchError(() =>
-          this.neonService.getProducts().pipe(
-            switchMap((data: ProductModel[]) => {
-              this.storageService.save(key, data, true);
-              return of({ data, updated_at: new Date().toISOString() });
-            }),
-          ),
-        ),
-        take(1),
-      )
-      .subscribe({
-        next: (products) => {
-          // Handle expired data
-          if ('data' in products && 'updated_at' in products) {
-            this.products.set(products.data);
-
-            if (this.storageService.hasExpired(products.updated_at)) {
-              console.warn('Data expired, a new fetch should occur.');
-              this.storageService.delete(key);
-              this.storageService.updateKey();
-            }
-          } else {
-            // raw array fallback
-            this.products.set(products);
-          }
-        },
-        error: (error) => {
-          alert(error.message || 'Something went wrong');
-        },
-      });
+    this.neonService
+      .getProducts()
+      .pipe(take(1))
+      .subscribe((products) => this.products.set(products));
   }
 
   /**
@@ -138,6 +131,67 @@ export class Product {
    * @param id - ID of the product to delete
    */
   onDeleteRow(id: ProductModel['id']) {
-    console.log(id);
+    if (this.isOnline()) {
+      // Procced with the actual call.
+      // this.neonService.deleteProduct(id);
+      console.log('Immediately call delete product.');
+    } else {
+      // Save action and optionally mutate local dataSource.
+      // Note: If localDatasource is mutated the cached data will not also be updated, thus after a reload when offline,
+      // we will still get the latest fetched data without local mutation.
+      this.offlineActionsService.actionQueue.update((prev) => [
+        ...prev,
+        { id, action: HTTPAction.DELETE },
+      ]);
+      console.table(this.offlineActionsService.actionQueue);
+    }
+  }
+
+  /**
+   * Loads product data using `localStorage` as a custom caching fallback.
+   *
+   * ⚠️ Note: This method is only for demonstration purposes.
+   *
+   * The Angular Service Worker already handles caching automatically for: **"/api/products"**
+   *
+   * When the app is offline, Angular will serve the cached data from the service worker.
+   * Therefore, this manual caching logic is not required in production.
+   */
+  private loadProductsWithFallbackCache(): void {
+    const key = this.storageService.key();
+
+    this.storageService
+      .checkForCachedData<
+        ProductModel[] | { data: ProductModel[]; updated_at: string }
+      >(key)
+      .pipe(
+        catchError(() =>
+          this.neonService.getProducts().pipe(
+            switchMap((data: ProductModel[]) => {
+              this.storageService.save(key, data, true);
+              return of({ data, updated_at: new Date().toISOString() });
+            }),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe({
+        next: (products) => {
+          if ('data' in products && 'updated_at' in products) {
+            this.products.set(products.data);
+
+            if (this.storageService.hasExpired(products.updated_at)) {
+              console.warn('Data expired, a new fetch should occur.');
+              this.storageService.delete(key);
+              this.storageService.updateKey();
+            }
+          } else {
+            this.products.set(products);
+          }
+        },
+        error: (error) => {
+          alert(error.message || 'Something went wrong');
+        },
+      });
   }
 }
