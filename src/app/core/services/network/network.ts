@@ -13,6 +13,7 @@ export class Network {
   // About online/ offline status.
   // TODO THIS CAN ALSO BE DONE WITH SIGNALS CANT IT
   private onlineSubject = new BehaviorSubject('');
+  /** Observable to listen to *network `events`*. */
   public network$ = this.onlineSubject.asObservable();
 
   // Whether the application should continue as offline mode.
@@ -40,19 +41,19 @@ export class Network {
     );
 
     merge(online$, offline$)
-      .pipe(startWith(navigator.onLine ? 'online' : 'offline'), skip(1))
+      .pipe(startWith(navigator.onLine ? 'online' : 'offline'))
       .subscribe((status) => {
         this.onlineSubject.next(status);
-        this.matBottomSheet.open(Settings, { data: status });
+        //this.matBottomSheet.open(Settings, { data: status });
 
         // Automatically remove offline mode when online.
         if (status === 'online') {
           this.offlineModeSubject.next(false);
 
           // Automatically close the `Online` popup.
-          setTimeout(() => {
-            this.matBottomSheet.dismiss();
-          }, this.ONLINE_DISMISS_TIMEOUT);
+          // setTimeout(() => {
+          //   this.matBottomSheet.dismiss();
+          // }, this.ONLINE_DISMISS_TIMEOUT);
         }
       });
   }
