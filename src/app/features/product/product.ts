@@ -136,14 +136,14 @@ export class Product {
       // this.neonService.deleteProduct(id);
       console.log('Immediately call delete product.');
     } else {
-      // Save action and optionally mutate local dataSource.
+      // Save action and optionally TODO mutate local dataSource.
       // Note: If localDatasource is mutated the cached data will not also be updated, thus after a reload when offline,
       // we will still get the latest fetched data without local mutation.
       this.offlineActionsService.actionQueue.update((prev) => [
         ...prev,
         { id, action: HTTPAction.DELETE },
       ]);
-      console.table(this.offlineActionsService.actionQueue);
+      console.table(this.offlineActionsService.actionQueue());
     }
   }
 
