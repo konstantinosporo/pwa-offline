@@ -25,7 +25,6 @@ export class OfflineActions {
             .pipe(take(1))
             .subscribe({
               next: (product) => {
-                console.log(`${product.name} deleted successfully`);
                 this.actionQueue.set(actions.filter((a) => a.id !== action.id));
               },
               error: (err) => {

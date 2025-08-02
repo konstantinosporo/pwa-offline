@@ -1,0 +1,73 @@
+@use '@angular/material' as mat;
+
+// Define custom color variables for status
+$status-online-color: green;
+$status-offline-color: red;
+
+// Customize Angular Material icons based on status
+.wifi {
+  @include mat.icon-overrides((color: $status-online-color,
+    ));
+}
+
+.wifi-off {
+  @include mat.icon-overrides((color: $status-offline-color,
+    ));
+}
+
+// Layout styling
+.spacer {
+  padding-inline-start: 1rem;
+  flex: 1;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Logo styling
+.logo {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+// Chip content layout
+.chip-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// Status label
+.status {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.status-online {
+  color: $status-online-color;
+}
+
+.status-offline {
+  color: $status-offline-color;
+}

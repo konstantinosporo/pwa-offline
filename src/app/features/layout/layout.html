@@ -1,0 +1,33 @@
+@let online = isOnline();
+
+<mat-toolbar color="primary">
+  <span class="logo">
+    <img src="/pwa-logo.png" alt="Logo image" />
+  </span>
+
+  <span class="spacer">
+    <nav>
+      <a routerLink="/">Home</a>
+      <a routerLink="/products">Products</a>
+    </nav>
+  </span>
+
+  <div [ngClass]="online ? 'wifi' : 'wifi-off'">
+    <mat-chip>
+      <span class="chip-content">
+        <mat-icon>{{ online ? 'wifi' : 'wifi_off' }}</mat-icon>
+        <span
+          class="status"
+          [ngClass]="{
+            'status-online': online,
+            'status-offline': !online
+          }"
+        >
+          {{ online ? 'Online' : 'Offline' }}
+        </span>
+      </span>
+    </mat-chip>
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
