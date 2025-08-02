@@ -23,7 +23,7 @@
             'status-offline': !online
           }"
         >
-          {{ online ? 'Online' : 'Offline' }}
+          {{ isMobile ? '' : (online ? 'Online' : 'Offline') }}
         </span>
       </span>
     </mat-chip>

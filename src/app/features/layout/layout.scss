@@ -55,7 +55,10 @@ nav {
 .chip-content {
   display: flex;
   align-items: center;
-  gap: 4px;
+
+  @media screen and (min-width: 601px) {
+    gap: 4px;
+  }
 }
 
 // Status label

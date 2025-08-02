@@ -8,6 +8,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Network } from '../../core/services/network/network';
 import { Status } from '../../core/services/network/network.model';
 import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
+import { ViewportRuler } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'pwa-layout',
@@ -27,11 +28,12 @@ export class Layout {
   private readonly network = inject(Network);
   private readonly offlineActions = inject(OfflineActions);
   private readonly snackbar = inject(MatSnackBar);
+  protected readonly observer = inject(ViewportRuler);
 
   readonly isOnline = computed(() => this.network.status() === Status.Online);
   readonly actionQueue = computed(() => this.offlineActions.actionQueue());
 
-  testCounter = 0;
+  protected isMobile = false;
 
   constructor() {
     effect(() => {
@@ -40,11 +42,10 @@ export class Layout {
           duration: 3000,
         });
 
-        console.log(`Triggered ${this.testCounter} times.`);
-        this.testCounter = +1;
-
         this.offlineActions.initiateActionExecuting();
       }
     });
+
+    this.isMobile = this.observer.getViewportSize().width < 600;
   }
 }
