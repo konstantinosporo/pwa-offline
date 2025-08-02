@@ -13,17 +13,17 @@ import { catchError, of, switchMap, take } from 'rxjs';
 
 import { Neon } from '../../core/services/neon/neon';
 import { Network } from '../../core/services/network/network';
-import { Storage } from '../../core/services/storage/storage';
+import { Status } from '../../core/services/network/network.model';
 import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
 import { HTTPAction } from '../../core/services/offline-actions/offline-actions.model';
-import { Status } from '../../core/services/network/network.model';
+import { Storage } from '../../core/services/storage/storage';
 
-import { ProductList } from './product-list/product-list';
-import { ProductModel } from './models/product.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Search } from '../shared/search/search';
 import { NoDataTemplate } from '../shared/templates/no-data-template/no-data-template';
 import { SpinnerTemplate } from '../shared/templates/spinner-template/spinner-template';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProductModel } from './models/product.model';
+import { ProductList } from './product-list/product-list';
 
 @Component({
   selector: 'pwa-product',
@@ -74,17 +74,17 @@ export class Product {
     return new MatTableDataSource(filtered);
   });
 
-  // ─── Lifecycle ─────────────────────────────────────────────────────────
-  ngOnInit(): void {
-    this.neonService
-      .getProducts()
-      .pipe(take(1))
-      .subscribe((products) => {
-        this.products.set(products);
-      });
-
-    // this.neonService.generateProducts();
-  }
+  // ─── Effect ──────────────────────────────────────────────────────────
+  reloadProductsEffect = effect(() => {
+    if (this.isOnline()) {
+      this.neonService
+        .getProducts()
+        .pipe(take(1))
+        .subscribe((products) => {
+          this.products.set(products);
+        });
+    }
+  });
 
   // ─── Public Methods ────────────────────────────────────────────────────
 
