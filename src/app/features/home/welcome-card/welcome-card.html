@@ -1,0 +1,35 @@
+<mat-card class="welcome-card">
+  <mat-card-header>
+    <mat-card-title>PWA Offline</mat-card-title>
+    <mat-card-subtitle>
+      Welcome to your offline-first experience.
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>
+      This application works offline, queues your actions, and syncs them
+      automatically once you're back online.
+    </p>
+
+    <p>
+      <strong>Note:</strong> For testing purposes, <u>online deletion</u> and
+      <u>update</u> functionalities are currently disabled. However,
+      <b>offline deletion</b> still works and will be queued until you're back
+      online.
+    </p>
+
+    @if (pendingActions() > 0) {
+    <div class="queue-info">
+      <mat-icon color="warn">sync_problem</mat-icon>
+      <span>{{ pendingActions() }} unsynced action(s)</span>
+    </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <a mat-raised-button color="primary" routerLink="/products">
+      Go to Products
+    </a>
+  </mat-card-actions>
+</mat-card>
