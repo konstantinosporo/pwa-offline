@@ -1,3 +1,4 @@
+@if(toggleSearch()){
 <pwa-search
   #search
   placeholder="Search products.."
@@ -5,12 +6,14 @@
   (changed)="applyFilter($event)"
 />
 
-@if(products().length){
+} @if(products().length){
 <div class="product-list-container">
   <pwa-product-list
+    [dataSource]="dataSource()"
+    (toggleSearch)="toggleSearch.set(!toggleSearch())"
+    (refresh)="load()"
     (update)="onUpdateRow($event)"
     (delete)="onDeleteRow($event)"
-    [dataSource]="dataSource()"
   />
   @if(dataSource().filteredData.length === 0){
   <pwa-no-data-template

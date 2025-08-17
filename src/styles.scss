@@ -45,6 +45,22 @@ body {
   justify-content: end;
 }
 
+.justfy-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
+}
+
 .linear {
   background: linear-gradient(to right, #bf57e2, #f52718);
   background-clip: text;

@@ -57,6 +57,7 @@ export class Product {
   private readonly isOnline = computed(
     () => this.networkService.status() === Status.Online,
   );
+  protected readonly toggleSearch = signal(true);
 
   // ─── Computed ──────────────────────────────────────────────────────────
   dataSource = computed(() => {
@@ -76,6 +77,12 @@ export class Product {
 
   // ─── Lifecycle ─────────────────────────────────────────────────────────
   ngOnInit(): void {
+    this.load();
+  }
+
+  // ─── Public Methods ────────────────────────────────────────────────────
+
+  load() {
     this.neonService
       .getProducts()
       .pipe(take(1))
@@ -83,8 +90,6 @@ export class Product {
         this.products.set(products);
       });
   }
-
-  // ─── Public Methods ────────────────────────────────────────────────────
 
   applyFilter(filterValue: string) {
     this.filter.set(filterValue);

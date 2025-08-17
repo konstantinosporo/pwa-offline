@@ -40,7 +40,24 @@
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Update / Delete</th>
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        [style.textAlign]="'center'"
+        style="width: 100px"
+      >
+        <div class="flex items-center justify-around">
+          Actions
+          <div class="flex gap-1">
+            <button matMiniFab class="linear" (click)="toggleSearch.emit()">
+              <mat-icon class="linear">search</mat-icon>
+            </button>
+            <button matMiniFab class="linear" (click)="refresh.emit()">
+              <mat-icon class="linear">refresh</mat-icon>
+            </button>
+          </div>
+        </div>
+      </th>
       <td mat-cell *matCellDef="let element">
         <div class="flex items-center justify-center">
           <button mat-button class="update" (click)="update.emit(element.id)">

@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class ProductList {
   dataSource = input<MatTableDataSource<ProductModel, MatPaginator>>();
 
+  toggleSearch = output<void>();
+  refresh = output<void>();
   update = output<ProductModel['id']>();
   delete = output<ProductModel['id']>();
 
