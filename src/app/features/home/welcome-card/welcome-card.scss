@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+
+.angular {
+  @include mat.chips-overrides((label-text-color: #ffffff,
+      elevated-container-color: #d81414,
+      outline-color: transparent,
+    ));
+}
+
+.pwa {
+  @include mat.chips-overrides((outline-color: #CE93D8,
+    ));
+}
+
+mat-chip.angular {
+  background: linear-gradient(to right, #f06, #BA3FE3);
+  color: white;
+}
+
+mat-icon.linear,
+.pwa-text {
+  background: linear-gradient(to right, #BA3FE3, #F44336);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.note {
+  font-weight: 300;
+}

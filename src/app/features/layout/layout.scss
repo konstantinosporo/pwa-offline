@@ -1,10 +1,11 @@
 @use '@angular/material' as mat;
 
-// Define custom color variables for status
-$status-online-color: green;
+// Variables
+$status-online-color: var(--mat-sys-on-secondary-container);
 $status-offline-color: red;
 
-// Customize Angular Material icons based on status
+
+// Status Icon Styles
 .wifi {
   @include mat.icon-overrides((color: $status-online-color,
     ));
@@ -15,7 +16,8 @@ $status-offline-color: red;
     ));
 }
 
-// Layout styling
+
+// Layout
 .spacer {
   padding-inline-start: 1rem;
   flex: 1;
@@ -24,21 +26,29 @@ $status-offline-color: red;
 nav {
   display: flex;
   align-items: center;
+  justify-content: end;
   gap: 1rem;
-  width: 90%;
+  width: calc(100% - 1rem);
+  font-size: 16px;
 
   a {
+    width: 100%;
     text-decoration: none;
     color: inherit;
-    font-weight: 500;
+    font-weight: 400;
 
     &:hover {
-      text-decoration: underline;
+      background: linear-gradient(to left, #bf57e2, #f52718);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
   }
 }
 
-// Logo styling
+
+// Logo
 .logo {
   display: flex;
   align-items: center;
@@ -51,7 +61,14 @@ nav {
   }
 }
 
-// Chip content layout
+
+// Chip Styles
+.status-chip {
+  @include mat.chips-overrides((outline-color: transparent,
+      label-text-size: 16px,
+    ));
+}
+
 .chip-content {
   display: flex;
   align-items: center;
@@ -61,7 +78,8 @@ nav {
   }
 }
 
-// Status label
+
+// Status Labels
 .status {
   font-size: 16px;
   font-weight: 500;
@@ -73,4 +91,22 @@ nav {
 
 .status-offline {
   color: $status-offline-color;
+}
+
+
+// Divider
+mat-divider {
+  @include mat.divider-overrides((color: var(--mat-sys-on-secondary-container),
+    ));
+  margin: 0 .7rem;
+}
+
+
+// Icons
+mat-icon {
+  background: linear-gradient(to left, #bf57e2, #f52718);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

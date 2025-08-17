@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -9,7 +9,7 @@ import { Network } from '../../core/services/network/network';
 import { Status } from '../../core/services/network/network.model';
 import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
 import { ViewportRuler } from '@angular/cdk/scrolling';
-
+import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'pwa-layout',
   imports: [
@@ -18,6 +18,7 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
     MatToolbarModule,
     MatIconModule,
     MatChipsModule,
+    MatDividerModule,
     NgClass,
     RouterLink,
   ],
@@ -33,7 +34,7 @@ export class Layout {
   readonly isOnline = computed(() => this.network.status() === Status.Online);
   readonly actionQueue = computed(() => this.offlineActions.actionQueue());
 
-  protected isMobile = false;
+  protected isMobile = signal(false);
 
   constructor() {
     effect(() => {
@@ -46,6 +47,12 @@ export class Layout {
       }
     });
 
-    this.isMobile = this.observer.getViewportSize().width < 600;
+    this.viewportObserve();
+  }
+
+  viewportObserve() {
+    this.observer.change(10).subscribe(() => {
+      this.isMobile.set(this.observer.getViewportSize().width < 600);
+    });
   }
 }

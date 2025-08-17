@@ -24,3 +24,17 @@
       ));
   }
 }
+
+
+.mat-cell,
+.mat-header-cell {
+  padding: 0.5rem 1rem;
+}
+
+.description-cell {
+  max-width: 200px;
+  /* or any limit */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

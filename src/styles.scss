@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 html {
@@ -6,6 +7,11 @@ html {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: light dark;
+  @include mat.theme((color: mat.$violet-palette,
+      typography: Inter,
+      density: 0));
+
 }
 
 body {
@@ -14,4 +20,9 @@ body {
   height: 100dvh;
   width: 100%;
   font-family: inherit;
+
+}
+
+.flex {
+  display: flex;
 }
