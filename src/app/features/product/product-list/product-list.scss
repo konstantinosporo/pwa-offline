@@ -1,39 +1,28 @@
 @use '@angular/material' as mat;
 
 .table-wrapper {
+  max-height: calc(100dvh - 170px);
   max-width: 100vw;
   width: 100%;
   overflow-x: auto;
 }
 
 .update {
-  &:hover {
-    @include mat.button-overrides((text-label-text-color: green,
-        text-state-layer-color: green,
-        text-hover-state-layer-opacity: 0.12,
-      ));
+  @include mat.button-overrides((text-label-text-color: var(--mat-sys-secondary),
+    ));
 
-  }
+
 }
 
 .delete {
-  &:hover {
-    @include mat.button-overrides((text-label-text-color: red,
-        text-state-layer-color: red,
-        text-hover-state-layer-opacity: 0.12,
-      ));
-  }
+  @include mat.button-overrides((text-label-text-color: var(--mat-sys-error),
+    ));
+
 }
 
-
-.mat-cell,
-.mat-header-cell {
-  padding: 0.5rem 1rem;
-}
 
 .description-cell {
   max-width: 200px;
-  /* or any limit */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -13,6 +13,7 @@ export class Search {
    * Initial placeholder on unfocused-unselected input.
    */
   placeholder = input('Search..');
+  width = input('100%');
   /**
    * The `input` reference.
    */

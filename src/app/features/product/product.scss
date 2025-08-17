@@ -1,10 +1,10 @@
 .product-list-container {
   width: calc(100% - 20px);
   height: calc(100% - 84px);
+  max-width: 1600px;
   overflow: auto;
   margin: 0 auto;
   border-radius: 10px;
-  padding: 10px;
 
   table {
     width: 100%;

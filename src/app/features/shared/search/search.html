@@ -1,4 +1,9 @@
-<mat-form-field> 
+<mat-form-field [style.width]="width()">
   <mat-label>{{placeholder()}}</mat-label>
-  <input #input matInput (keyup)="emitFilter($event)" placeholder="Ex. Decoration Set" />
+  <input
+    #input
+    matInput
+    (keyup)="emitFilter($event)"
+    placeholder="Ex. Decoration Set"
+  />
 </mat-form-field>

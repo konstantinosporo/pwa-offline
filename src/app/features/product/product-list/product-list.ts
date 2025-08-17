@@ -3,10 +3,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ProductModel } from '../models/product.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'pwa-product-list',
-  imports: [MatTableModule, MatButtonModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })

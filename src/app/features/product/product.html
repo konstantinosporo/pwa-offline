@@ -1,10 +1,12 @@
+<pwa-search
+  #search
+  placeholder="Search products.."
+  width="calc(100% - 20px)"
+  (changed)="applyFilter($event)"
+/>
+
 @if(products().length){
 <div class="product-list-container">
-  <pwa-search
-    #search
-    placeholder="Search products.."
-    (changed)="applyFilter($event)"
-  />
   <pwa-product-list
     (update)="onUpdateRow($event)"
     (delete)="onDeleteRow($event)"

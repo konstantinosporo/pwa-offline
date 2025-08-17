@@ -23,6 +23,31 @@ body {
 
 }
 
+.base-container {
+  max-width: 1620px;
+  margin: 0 auto;
+}
+
 .flex {
   display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.linear {
+  background: linear-gradient(to right, #bf57e2, #f52718);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

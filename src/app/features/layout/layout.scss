@@ -23,11 +23,16 @@ $status-offline-color: red;
   flex: 1;
 }
 
+mat-toolbar {
+  max-width: 1620px;
+  margin: 0 auto;
+}
+
 nav {
   display: flex;
   align-items: center;
   justify-content: end;
-  gap: 1rem;
+  gap: .7rem;
   width: calc(100% - 1rem);
   font-size: 16px;
 
