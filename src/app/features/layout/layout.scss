@@ -4,7 +4,6 @@
 $status-online-color: var(--mat-sys-on-secondary-container);
 $status-offline-color: red;
 
-
 // Status Icon Styles
 .wifi {
   @include mat.icon-overrides((color: $status-online-color,
