@@ -1,10 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
-import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
 import { WelcomeCard } from './welcome-card/welcome-card';
 
 @Component({

@@ -1,35 +1,41 @@
-<mat-card class="welcome-card">
-  <mat-card-header>
-    <mat-card-title>PWA Offline</mat-card-title>
-    <mat-card-subtitle>
-      Welcome to your offline-first experience.
-    </mat-card-subtitle>
-  </mat-card-header>
+<div class="card-container">
+  <mat-card class="mat-elevation-z8">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>cloud_off</mat-icon>
+      </div>
+      <mat-card-title>PWA Offline Mode</mat-card-title>
+      <mat-card-subtitle
+        >Presenting offline-first experience with angular/pwa.
+      </mat-card-subtitle>
+    </mat-card-header>
 
-  <mat-card-content>
-    <p>
-      This application works offline, queues your actions, and syncs them
-      automatically once you're back online.
-    </p>
+    <mat-card-content style="padding-bottom: 5px">
+      <p>This application:</p>
+      <ol>
+        <li>Works offline</li>
+        <li>Queues actions while offline</li>
+        <li>Syncs actions when back online</li>
+      </ol>
 
-    <p>
-      <strong>Note:</strong> For testing purposes, <u>online deletion</u> and
-      <u>update</u> functionalities are currently disabled. However,
-      <b>offline deletion</b> still works and will be queued until you're back
-      online.
-    </p>
+      <p>
+        <strong>Note:</strong> Online <u>deletion</u> and <u>update</u> are
+        disabled for testing. Offline <b>deletion</b> is still functional and
+        will be queued until you're back online.
+      </p>
 
-    @if (pendingActions() > 0) {
-    <div class="queue-info">
-      <mat-icon color="warn">sync_problem</mat-icon>
-      <span>{{ pendingActions() }} unsynced action(s)</span>
-    </div>
-    }
-  </mat-card-content>
+      @if(pendingActions() > 0){
+      <div class="mat-elevation-z2">
+        <mat-icon>sync_problem</mat-icon>
+        <span>{{ pendingActions() }} unsynced action(s)</span>
+      </div>
+      }
+    </mat-card-content>
 
-  <mat-card-actions>
-    <a mat-raised-button color="primary" routerLink="/products">
-      Go to Products
-    </a>
-  </mat-card-actions>
-</mat-card>
+    <mat-card-actions>
+      <a mat-raised-button color="primary" routerLink="/products">
+        Go to Products
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</div>

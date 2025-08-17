@@ -1,12 +1,5 @@
 @use '@angular/material' as mat;
 
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
-// :root {
-//   @include mat.fab-overrides((container-color: orange,
-//       container-elevation-shadow: red,
-//     ));
-// }
-
 .table-wrapper {
   max-width: 100vw;
   width: 100%;
