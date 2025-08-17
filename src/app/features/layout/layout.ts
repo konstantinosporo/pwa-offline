@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -10,6 +10,9 @@ import { Status } from '../../core/services/network/network.model';
 import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { MatDividerModule } from '@angular/material/divider';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs/operators';
+
 @Component({
   selector: 'pwa-layout',
   imports: [
@@ -29,12 +32,18 @@ export class Layout {
   private readonly network = inject(Network);
   private readonly offlineActions = inject(OfflineActions);
   private readonly snackbar = inject(MatSnackBar);
-  protected readonly observer = inject(ViewportRuler);
+  private readonly observer = inject(ViewportRuler);
 
   readonly isOnline = computed(() => this.network.status() === Status.Online);
   readonly actionQueue = computed(() => this.offlineActions.actionQueue());
 
-  protected isMobile = signal(false);
+  protected readonly isMobile = toSignal(
+    this.observer.change(10).pipe(
+      startWith(null),
+      map(() => this.observer.getViewportSize().width < 600),
+    ),
+    { initialValue: false },
+  );
 
   constructor() {
     effect(() => {
@@ -45,14 +54,6 @@ export class Layout {
 
         this.offlineActions.initiateActionExecuting();
       }
-    });
-
-    this.viewportObserve();
-  }
-
-  viewportObserve() {
-    this.observer.change(10).subscribe(() => {
-      this.isMobile.set(this.observer.getViewportSize().width < 600);
     });
   }
 }
