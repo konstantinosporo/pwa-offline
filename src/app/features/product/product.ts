@@ -58,6 +58,7 @@ export class Product {
     () => this.networkService.status() === Status.Online,
   );
   protected readonly toggleSearch = signal(true);
+  protected readonly isSessionOnline = signal(false);
 
   // ─── Computed ──────────────────────────────────────────────────────────
   dataSource = computed(() => {
@@ -77,7 +78,8 @@ export class Product {
 
   // ─── Effects ──────────────────────────────────────────────────────────
   reload = effect(() => {
-    if (this.isOnline()) {
+    if (this.isOnline() || !this.isSessionOnline()) {
+      this.isSessionOnline.set(true);
       this.load();
     }
   });
