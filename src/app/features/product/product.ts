@@ -79,20 +79,15 @@ export class Product {
   reload = effect(() => {
     if (this.isOnline()) {
       this.load();
-      console.log('Triggered');
     }
   });
-
-  ngOnInit(): void {
-    this.load();
-  }
 
   load() {
     this.neonService
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        this.products.update((prev) => (prev.length ? products : products));
+        this.products.set(products);
       });
   }
 
