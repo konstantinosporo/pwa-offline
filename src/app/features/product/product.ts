@@ -75,19 +75,24 @@ export class Product {
     return new MatTableDataSource(filtered);
   });
 
-  // ─── Lifecycle ─────────────────────────────────────────────────────────
+  // ─── Effects ──────────────────────────────────────────────────────────
+  reload = effect(() => {
+    if (this.isOnline()) {
+      this.load();
+      console.log('Triggered');
+    }
+  });
+
   ngOnInit(): void {
     this.load();
   }
-
-  // ─── Public Methods ────────────────────────────────────────────────────
 
   load() {
     this.neonService
       .getProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        this.products.set(products);
+        this.products.update((prev) => (prev.length ? products : products));
       });
   }
 
@@ -98,10 +103,6 @@ export class Product {
   resetFilter() {
     this.filter.set('');
     this.searchInputRef()?.resetFilter();
-  }
-
-  onUpdateRow(id: ProductModel['id']) {
-    console.log(id);
   }
 
   onDeleteRow(id: ProductModel['id']) {

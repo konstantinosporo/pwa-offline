@@ -12,6 +12,7 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 import { MatDividerModule } from '@angular/material/divider';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs/operators';
+import { BgSquares } from '../shared/bg-squares/bg-squares';
 
 @Component({
   selector: 'pwa-layout',
@@ -24,6 +25,7 @@ import { map, startWith } from 'rxjs/operators';
     MatDividerModule,
     NgClass,
     RouterLink,
+    BgSquares,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
