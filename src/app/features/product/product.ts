@@ -46,7 +46,7 @@ export class Product implements OnInit {
   private readonly neonService = inject(Neon);
   protected readonly networkService = inject(Network);
   protected readonly storageService = inject(Storage);
-  protected readonly offlineActionsService = inject(OfflineActions);
+  protected readonly offlineActions = inject(OfflineActions);
   private readonly snackbar = inject(MatSnackBar);
 
   // ViewChild
@@ -76,6 +76,12 @@ export class Product implements OnInit {
     return new MatTableDataSource(filtered);
   });
 
+  reloadEffect = effect(() => {
+    if (this.offlineActions.actionsFinished()) {
+      this.load();
+    }
+  });
+
   ngOnInit(): void {
     this.load();
   }
@@ -87,6 +93,10 @@ export class Product implements OnInit {
       .subscribe((products) => {
         this.products.set(products);
       });
+  }
+
+  onOfflineActionExecuted() {
+    console.log('Helllll yeah!!!');
   }
 
   applyFilter(filterValue: string) {
@@ -105,7 +115,7 @@ export class Product implements OnInit {
       console.log('Immediately call delete product.');
       // this.neonService.deleteProduct(id).subscribe();
     } else {
-      this.offlineActionsService.actionQueue.update((prev) => [
+      this.offlineActions.actionQueue.update((prev) => [
         ...prev,
         { id, action: HTTPAction.DELETE },
       ]);

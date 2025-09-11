@@ -1,46 +1,27 @@
-.animatedBackground {
-  background: transparent;
-  background: -webkit-linear-gradient(to left, #1b2844, #1D2435);
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  position: fixed;
-}
-
-.circles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 .circles li {
   position: absolute;
   display: block;
   list-style: none;
   width: 20px;
   height: 20px;
-  background: rgba(235, 19, 45, 0.10);
-  animation: animate 60s linear infinite, changeColor 60s linear infinite, changeBoxShadowColor 60s linear infinite;
+  background: rgba(255, 255, 255, 0.08);
+  animation: animate 60s linear infinite, changeColor 80s ease-in-out infinite, changeBoxShadowColor 80s ease-in-out infinite;
 
   bottom: -150px;
-  -webkit-box-shadow: 0px 0px 40px 8px rgba(132, 25, 253, 0.1);
-  -moz-box-shadow: 0px 0px 40px 8px rgba(132, 25, 253, 0.1);
-  box-shadow: 0px 0px 40px 8px rgba(132, 25, 254, 0.1);
+  box-shadow: 0px 0px 40px 8px rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
 }
 
+/* Example right-side positions */
 .circles li:nth-child(1) {
-  left: 25%;
+  left: 65%;
   width: 80px;
   height: 80px;
   animation-delay: 0s;
 }
 
-
 .circles li:nth-child(2) {
-  left: 10%;
+  left: 75%;
   width: 20px;
   height: 20px;
   animation-delay: 2s;
@@ -48,14 +29,14 @@
 }
 
 .circles li:nth-child(3) {
-  left: 70%;
+  left: 80%;
   width: 20px;
   height: 20px;
   animation-delay: 4s;
 }
 
 .circles li:nth-child(4) {
-  left: 40%;
+  left: 60%;
   width: 60px;
   height: 60px;
   animation-delay: 0s;
@@ -63,28 +44,28 @@
 }
 
 .circles li:nth-child(5) {
-  left: 65%;
+  left: 70%;
   width: 20px;
   height: 20px;
   animation-delay: 0s;
 }
 
 .circles li:nth-child(6) {
-  left: 75%;
+  left: 85%;
   width: 110px;
   height: 110px;
   animation-delay: 3s;
 }
 
 .circles li:nth-child(7) {
-  left: 35%;
+  left: 90%;
   width: 150px;
   height: 150px;
   animation-delay: 7s;
 }
 
 .circles li:nth-child(8) {
-  left: 50%;
+  left: 65%;
   width: 25px;
   height: 25px;
   animation-delay: 15s;
@@ -92,7 +73,7 @@
 }
 
 .circles li:nth-child(9) {
-  left: 20%;
+  left: 80%;
   width: 15px;
   height: 15px;
   animation-delay: 2s;
@@ -100,20 +81,19 @@
 }
 
 .circles li:nth-child(10) {
-  left: 85%;
+  left: 90%;
   width: 150px;
   height: 150px;
   animation-delay: 0s;
   animation-duration: 11s;
 }
 
-
+/* Animate position / rotation */
 @keyframes animate {
-
   0% {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
-    border-radius: 25%;
+    border-radius: 45%;
   }
 
   100% {
@@ -121,58 +101,53 @@
     opacity: 0;
     border-radius: 50%;
   }
-
 }
 
+/* Soft, pastel rainbow transitions */
 @keyframes changeColor {
   0% {
-    background-color: rgba(255, 99, 132, 0.10);
+    background-color: rgba(173, 216, 230, 0.08);
   }
 
-  20% {
-    background-color: rgba(255, 109, 64, 0.10);
+  /* light blue */
+  25% {
+    background-color: rgba(221, 160, 221, 0.08);
   }
 
-  40% {
-    background-color: rgba(255, 205, 86, 0.10);
+  /* plum */
+  50% {
+    background-color: rgba(144, 238, 144, 0.08);
   }
 
-  60% {
-    background-color: rgba(75, 192, 192, 0.10);
+  /* light green */
+  75% {
+    background-color: rgba(255, 182, 193, 0.08);
   }
 
-  80% {
-    background-color: rgba(54, 162, 235, 0.10);
-  }
-
+  /* light pink */
   100% {
-    background-color: rgba(103, 102, 255, 0.10);
+    background-color: rgba(173, 216, 230, 0.08);
   }
-
 }
 
 @keyframes changeBoxShadowColor {
   0% {
-    box-shadow: 0px 0px 40px 8px rgba(255, 99, 132, 0.2);
+    box-shadow: 0 0 40px 8px rgba(173, 216, 230, 0.08);
   }
 
-  20% {
-    box-shadow: 0px 0px 40px 8px rgba(255, 159, 64, 0.2);
+  25% {
+    box-shadow: 0 0 40px 8px rgba(221, 160, 221, 0.08);
   }
 
-  40% {
-    box-shadow: 0px 0px 40px 8px rgba(255, 205, 86, 0.2);
+  50% {
+    box-shadow: 0 0 40px 8px rgba(144, 238, 144, 0.08);
   }
 
-  60% {
-    box-shadow: 0px 0px 40px 8px rgba(75, 192, 192, 0.2);
-  }
-
-  80% {
-    box-shadow: 0px 0px 40px 8px rgba(54, 162, 235, 0.2);
+  75% {
+    box-shadow: 0 0 40px 8px rgba(255, 182, 193, 0.08);
   }
 
   100% {
-    box-shadow: 0px 0px 40px 8px rgba(153, 102, 255, 0.2);
+    box-shadow: 0 0 40px 8px rgba(173, 216, 230, 0.08);
   }
 }

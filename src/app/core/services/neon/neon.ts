@@ -10,22 +10,14 @@ export class Neon {
   private http = inject(HttpClient);
   private readonly neonApiUrl = 'https://node-api-jet.vercel.app/api';
 
-  /** Fetch `ProductModel[]` from the API. */
-  getProducts(fresh = false): Observable<ProductModel[]> {
-    const bypass = { 'ngsw-bypass': 'true' };
-    const headers = fresh ? bypass : {};
-
-    return this.http.get<ProductModel[]>(`${this.neonApiUrl}/products`, {
-      headers,
-    });
+  getProducts(): Observable<ProductModel[]> {
+    return this.http.get<ProductModel[]>(`${this.neonApiUrl}/products`);
   }
 
-  /** Delete a product from the API. */
   deleteProduct(id: ProductModel['id']) {
     return this.http.delete<ProductModel>(`${this.neonApiUrl}/products/${id}`);
   }
 
-  /** Generates dummy data on the API for testing offline actions. */
   generateProducts(amount = 10) {
     for (let i = 0; i < amount; i++) {
       const product: ProductModel = { name: 'Delete', price: 100 };

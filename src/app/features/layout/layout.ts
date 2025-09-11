@@ -25,6 +25,7 @@ import { BgSquares } from '../shared/bg-squares/bg-squares';
     MatDividerModule,
     NgClass,
     RouterLink,
+    BgSquares,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
@@ -48,12 +49,23 @@ export class Layout {
 
   constructor() {
     effect(() => {
-      if (this.isOnline() && this.actionQueue().length > 0) {
-        this.snackbar.open('Syncing offline changes...', undefined, {
-          duration: 3000,
-        });
+      const online = this.isOnline();
+      const hasQueue = this.actionQueue().length > 0;
 
-        this.offlineActions.initiateActionExecuting();
+      if (online && hasQueue) {
+        // mark busy before starting
+        this.offlineActions.actionsFinished.set(false);
+
+        const snackRef = this.snackbar.open(
+          `Syncing offline changes...(${this.actionQueue().length})`,
+        );
+
+        this.offlineActions.initiateActionExecuting()?.subscribe({
+          next: () => {
+            console.log('All offline actions finished.');
+            snackRef.dismiss();
+          },
+        });
       }
     });
   }

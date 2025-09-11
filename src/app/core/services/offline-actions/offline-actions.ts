@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HTTPAction, OfflineAction } from './offline-actions.model';
 import { Neon } from '../neon/neon';
 import { forkJoin, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +10,7 @@ import { catchError, tap } from 'rxjs/operators';
 export class OfflineActions {
   private readonly neon = inject(Neon);
 
-  /** All pending actions */
   public actionQueue = signal<OfflineAction[]>([]);
-
-  /** Notifies when all actions are done */
   public actionsFinished = signal(false);
 
   initiateActionExecuting() {
@@ -27,12 +24,6 @@ export class OfflineActions {
       switch (action.action) {
         case HTTPAction.DELETE:
           return this.neon.deleteProduct(action.id).pipe(
-            tap(() => {
-              // remove from queue on success
-              this.actionQueue.set(
-                this.actionQueue().filter((a) => a.id !== action.id),
-              );
-            }),
             catchError((err) => {
               console.error('Error deleting product', err);
               // swallow error so other requests can finish
@@ -44,11 +35,9 @@ export class OfflineActions {
       }
     });
 
-    forkJoin(requests).subscribe({
-      next: () => {
-        console.log('All offline actions finished.');
-        this.actionsFinished.set(true); // signal to reload UI
-      },
-    });
+    return forkJoin(requests).pipe(
+      tap(() => this.actionQueue.set([])),
+      finalize(() => this.actionsFinished.set(true)),
+    );
   }
 }
