@@ -15,6 +15,13 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "name": "ng prod",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: pwa",
+      "url": "http://localhost:4200/"
     }
   ]
 }

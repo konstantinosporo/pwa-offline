@@ -23,7 +23,6 @@
   width: 20px;
   height: 20px;
   background: rgba(235, 19, 45, 0.10);
-  /* softer, semi-transparent */
   animation: animate 60s linear infinite, changeColor 60s linear infinite, changeBoxShadowColor 60s linear infinite;
 
   bottom: -150px;
@@ -130,32 +129,26 @@
     background-color: rgba(255, 99, 132, 0.10);
   }
 
-  /* soft red */
   20% {
     background-color: rgba(255, 109, 64, 0.10);
   }
 
-  /* soft orange */
   40% {
     background-color: rgba(255, 205, 86, 0.10);
   }
 
-  /* soft yellow */
   60% {
     background-color: rgba(75, 192, 192, 0.10);
   }
 
-  /* soft teal */
   80% {
     background-color: rgba(54, 162, 235, 0.10);
   }
 
-  /* soft blue */
   100% {
     background-color: rgba(103, 102, 255, 0.10);
   }
 
-  /* soft purple */
 }
 
 @keyframes changeBoxShadowColor {

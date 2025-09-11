@@ -10,14 +10,11 @@
 .update {
   @include mat.button-overrides((text-label-text-color: var(--mat-sys-secondary),
     ));
-
-
 }
 
 .delete {
   @include mat.button-overrides((text-label-text-color: var(--mat-sys-error),
     ));
-
 }
 
 .description-cell {

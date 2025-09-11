@@ -59,7 +59,6 @@ export class Product implements OnInit {
     () => this.networkService.status() === Status.Online,
   );
   protected readonly toggleSearch = signal(true);
-  private firstLoad = true;
 
   // Data
   dataSource = computed(() => {
@@ -77,20 +76,7 @@ export class Product implements OnInit {
     return new MatTableDataSource(filtered);
   });
 
-  reloadEffect = effect(() => {
-    if (!this.isOnline() || this.firstLoad) return;
-
-    this.neonService
-      .getProducts()
-      .pipe(take(1))
-      .subscribe((products) => {
-        this.products.set(products);
-      });
-    console.log('ppppppasses');
-  });
-
   ngOnInit(): void {
-    this.firstLoad = false;
     this.load();
   }
 
