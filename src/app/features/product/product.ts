@@ -3,6 +3,7 @@ import {
   computed,
   effect,
   inject,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
@@ -40,26 +41,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './product.html',
   styleUrl: './product.scss',
 })
-export class Product {
-  // ─── Injections ───────────────────────────────────────────────────────
+export class Product implements OnInit {
+  // Injections
   private readonly neonService = inject(Neon);
   protected readonly networkService = inject(Network);
   protected readonly storageService = inject(Storage);
   protected readonly offlineActionsService = inject(OfflineActions);
   private readonly snackbar = inject(MatSnackBar);
 
-  // ─── ViewChild ─────────────────────────────────────────────────────────
+  // ViewChild
   private readonly searchInputRef = viewChild<Search>('search');
 
-  // ─── Signals ───────────────────────────────────────────────────────────
+  // Signals & Flags
   protected readonly products = signal<ProductModel[]>([]);
   private readonly filter = signal('');
   private readonly isOnline = computed(
     () => this.networkService.status() === Status.Online,
   );
   protected readonly toggleSearch = signal(true);
+  private firstLoad = true;
 
-  // ─── Computed ──────────────────────────────────────────────────────────
+  // Data
   dataSource = computed(() => {
     const search = this.filter().toLowerCase().trim();
     const all = this.products();
@@ -74,6 +76,23 @@ export class Product {
 
     return new MatTableDataSource(filtered);
   });
+
+  reloadEffect = effect(() => {
+    if (!this.isOnline() || this.firstLoad) return;
+
+    this.neonService
+      .getProducts()
+      .pipe(take(1))
+      .subscribe((products) => {
+        this.products.set(products);
+      });
+    console.log('ppppppasses');
+  });
+
+  ngOnInit(): void {
+    this.firstLoad = false;
+    this.load();
+  }
 
   load() {
     this.neonService

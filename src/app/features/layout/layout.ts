@@ -25,7 +25,6 @@ import { BgSquares } from '../shared/bg-squares/bg-squares';
     MatDividerModule,
     NgClass,
     RouterLink,
-    BgSquares,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
