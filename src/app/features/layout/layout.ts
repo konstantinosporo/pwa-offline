@@ -25,6 +25,7 @@ import { BgSquares } from '../shared/bg-squares/bg-squares';
     MatDividerModule,
     NgClass,
     RouterLink,
+    BgSquares,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
@@ -65,11 +66,13 @@ export class Layout {
             console.log('All offline actions finished.');
             snackRef.dismiss();
 
-            this.snackbar.open(
-              `All offline actions finished! Total actions completed: ${totalActions}`,
-              'Dismiss',
-              { duration: 3000 },
-            );
+            setTimeout(() => {
+              this.snackbar.open(
+                `All offline actions finished! Total actions completed: ${totalActions}`,
+                'Dismiss',
+                { duration: 3000 },
+              );
+            }, 100);
           },
         });
       }
