@@ -1,17 +1,23 @@
-import { NgClass } from '@angular/common';
+import { ViewportRuler } from '@angular/cdk/scrolling';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import {
+  IsActiveMatchOptions,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
+import { map, startWith } from 'rxjs/operators';
+import { routes } from '../../app.routes';
 import { Network } from '../../core/services/network/network';
 import { Status } from '../../core/services/network/network.model';
 import { OfflineActions } from '../../core/services/offline-actions/offline-actions';
-import { ViewportRuler } from '@angular/cdk/scrolling';
-import { MatDividerModule } from '@angular/material/divider';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map, startWith } from 'rxjs/operators';
 import { BgSquares } from '../shared/bg-squares/bg-squares';
 
 @Component({
@@ -25,7 +31,9 @@ import { BgSquares } from '../shared/bg-squares/bg-squares';
     MatDividerModule,
     NgClass,
     RouterLink,
+    RouterLinkActive,
     BgSquares,
+    TitleCasePipe,
   ],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
@@ -36,6 +44,9 @@ export class Layout {
   private readonly snackbar = inject(MatSnackBar);
   private readonly observer = inject(ViewportRuler);
 
+  // Router
+  routes = routes[0].children;
+  routerOptions = { exact: true };
   readonly isOnline = computed(() => this.network.status() === Status.Online);
   readonly actionQueue = computed(() => this.offlineActions.actionQueue());
 

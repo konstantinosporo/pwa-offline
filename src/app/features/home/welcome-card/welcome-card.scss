@@ -34,6 +34,12 @@ mat-icon.linear,
   color: transparent;
 }
 
+mat-card-subtitle,
+mat-card-content>ol>li {
+  font-weight: 300;
+}
+
 .note {
+  font-size: 13px;
   font-weight: 300;
 }

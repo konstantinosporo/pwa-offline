@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>Welcome to PWA Offline Demo</mat-card-title>
     <mat-card-subtitle>
-      Experience how <strong>Angular + Service Workers</strong> enable
+      Experience how <strong>Angular PWA + Service Workers</strong> enable
       offline-first apps.</mat-card-subtitle
     >
   </mat-card-header>
@@ -15,11 +15,10 @@
     </ol>
 
     <div class="info">
-      <small class="note">
-        <mat-icon inline>info</mat-icon>
-        For demonstration purposes online actions are disabled. Try caching products page once, go offline, and then delete
-        a product. 
-      </small>
+      <p class="note">
+        ℹ️ For demonstration purposes online actions are disabled. Try caching
+        products page once, go offline, and then delete a product.
+      </p>
     </div>
 
     @if(pendingActions() > 0){
