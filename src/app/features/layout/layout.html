@@ -7,12 +7,16 @@
 
   <span class="spacer">
     <nav>
+      @for(route of routes;track route.component){
       <mat-chip class="status-chip">
-        <a routerLink="/">Home</a>
-      </mat-chip>
-      <mat-chip class="status-chip">
-        <a routerLink="/products">Products</a>
-      </mat-chip>
+        <a
+          class="link"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="routerOptions"
+          [routerLink]="route.path"
+          >{{route.path === '' ? 'Home' : route.path|titlecase}}</a
+        > </mat-chip
+      >}
     </nav>
   </span>
 
