@@ -63,7 +63,6 @@ export class Layout {
 
         this.offlineActions.initiateActionExecuting()?.subscribe({
           next: () => {
-            console.log('All offline actions finished.');
             snackRef.dismiss();
 
             setTimeout(() => {
@@ -72,7 +71,7 @@ export class Layout {
                 'Dismiss',
                 { duration: 3000 },
               );
-            }, 100);
+            }, 300);
           },
         });
       }

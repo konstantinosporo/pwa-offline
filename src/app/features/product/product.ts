@@ -95,10 +95,6 @@ export class Product implements OnInit {
       });
   }
 
-  onOfflineActionExecuted() {
-    console.log('Helllll yeah!!!');
-  }
-
   applyFilter(filterValue: string) {
     this.filter.set(filterValue);
   }
@@ -119,9 +115,13 @@ export class Product implements OnInit {
         ...prev,
         { id, action: HTTPAction.DELETE },
       ]);
-      this.snackbar.open('Product delete queued (offline)', 'Dismiss', {
-        duration: 3000,
-      });
+      this.snackbar.open(
+        `🗑️ Product #${id} will be deleted once you’re back online`,
+        'Dismiss',
+        {
+          duration: 3000,
+        },
+      );
     }
   }
 
